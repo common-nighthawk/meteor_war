@@ -1,0 +1,32 @@
+<head>
+  <title>War</title>
+</head>
+
+<body>
+	{{> loginButtons}}
+  <h1>This is WAR! The first multi-player game Daniel ever built.</h1>
+  {{> newgame}}
+	<br><br><hr>
+	{{> playerturn}}
+	<h3>What card do you want to play?</h3>
+	{{#each cards}}
+		{{> showcards}}
+  {{/each}}
+</body>
+
+<template name="newgame">
+  <button>Start New Game!</button>
+</template>
+
+<template name="showcards">
+  {{#if isOwner}}	
+		<li>
+			{{value}} of {{suit}}
+			<input type="checkbox" class="play-card" />
+		</li>
+	{{/if}}
+</template>
+
+<template name="playerturn">
+  <p>It is current the turn of {{pt}}.</p>
+</template>
