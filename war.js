@@ -27,22 +27,19 @@ if (Meteor.isClient) {
 
   Template.showcards.events({
     "click .play-card": function () {
+			alert('hit');
       if (!Rounds.findOne()) {
   	    alert('this is the first round of the game!');	
 				Rounds.insert({player1: this.value, player2: null});
-        // if (Meteor.user().username === 'player1') {
-					// Rounds.update(Rounds.findOne()._id, { $set: { player1: this.value} });
-        // } else {
-					// Rounds.update(Rounds.findOne()._id, { $set: { player2: this.value} });
-				// }
 			} else if (Rounds.findOne().player1 !== null && Rounds.findOne().player2 === null) {
 				alert('pop!');
 				Rounds.update(Rounds.findOne()._id, { $set: { player2: this.value} });
-			} else if (Rounds.findOne().player1 !== null && Rounds.findOne().player2 !== null) {
+			} else if () {
+        alert(Rounds.find().limit(1).sort({$natural:-1})[0].player1 !== null && Rounds.find().limit(1).sort({$natural:-1})[0].player2 !== null
         alert('player 2 just went, yo!');
-        alert(this.value);
-        alert(Meteor.user().username);
-        //Rounds.update(Rounds.find().sort({playedAt:-1}).limit(1)._id, { $set: { Meteor.user().username: this.value} });
+				Rounds.insert({player1: this.value, player2: null});
+			} else {
+				alert(Rounds.find().limit(1).sort({$natural:-1})[0].player1 !== null);
 			}
     }
 	});
