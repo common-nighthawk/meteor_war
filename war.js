@@ -27,19 +27,37 @@ if (Meteor.isClient) {
 
   Template.showcards.events({
     "click .play-card": function () {
-			alert('hit');
-      if (!Rounds.findOne()) {
-  	    alert('this is the first round of the game!');	
-				Rounds.insert({player1: this.value, player2: null});
-			} else if (Rounds.findOne().player1 !== null && Rounds.findOne().player2 === null) {
-				alert('pop!');
-				Rounds.update(Rounds.findOne()._id, { $set: { player2: this.value} });
-			} else if () {
-        alert(Rounds.find().limit(1).sort({$natural:-1})[0].player1 !== null && Rounds.find().limit(1).sort({$natural:-1})[0].player2 !== null
-        alert('player 2 just went, yo!');
-				Rounds.insert({player1: this.value, player2: null});
-			} else {
-				alert(Rounds.find().limit(1).sort({$natural:-1})[0].player1 !== null);
+      if (!Rounds.findOne())  {
+				if (Meteor.user().username === 'player1') {
+				  Rounds.insert({player1: this._id, player2: null});
+			  } else {
+				  alert('It is not your turn to play.  Please wait patiently :)');
+				}
+			} else if (Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player1 !== null && Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player2 === null) {
+				if (Meteor.user().username === 'player2') {
+				  Rounds.update(Rounds.find({}, {sort: {_id: -1}}).fetch()[0]._id, { $set: { player2: this._id} });
+					var p1cardnum = Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player1;
+					var p2cardnum = Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player2;
+					var p1card = Cards.find({_id: p1cardnum}).fetch()[0];
+					var p2card = Cards.find({_id: p2cardnum}).fetch()[0];
+					if (p1card.value > p2card.value) {
+						alert('Player 1 Won That Round!');
+				    Cards.update(p1cardnum, { $set: { owner: 'player1'} });
+				    Cards.update(p2cardnum, { $set: { owner: 'player1'} });
+					} else {
+						alert('Player 2 Won That Round!');
+				    Cards.update(p1cardnum, { $set: { owner: 'player2'} });
+				    Cards.update(p2cardnum, { $set: { owner: 'player2'} });
+					}
+			  } else {
+				  alert('It is not your turn to play.  Please wait patiently :)');
+				}
+			} else if (Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player1 !== null && Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player2 !== null) {
+				if (Meteor.user().username === 'player1') {
+				  Rounds.insert({player1: this._id, player2: null});
+			  } else {
+				  alert('It is not your turn to play.  Please wait patiently :)');
+				}
 			}
     }
 	});
@@ -54,11 +72,11 @@ if (Meteor.isClient) {
     pt: function () {
 			if (!Rounds.findOne()) {
         return 'player1';
-			} else if (Rounds.findOne().player1 === null) {	
+			} else if (Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player1 === null) {	
 				return 'player1';
-			} else if (Rounds.findOne().player1 !== null && Rounds.findOne().player2 === null) {
+			} else if (Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player1 !== null && Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player2 === null) {
 				return 'player2';
-			} else if (Rounds.findOne().player1 !== null && Rounds.findOne().player2 !== null) {
+			} else if (Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player1 !== null && Rounds.find({}, {sort: {_id: -1}}).fetch()[0].player2 !== null) {
 				return 'player1';
 			}
      }
