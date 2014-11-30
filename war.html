@@ -42,12 +42,16 @@
 </template>
 
 <template name="playerturn">
-  <h3>It is currently the turn of: {{pt}}.</h3>
+  <h3>It is currently the turn of: {{playerTurn}}.</h3>
 </template>
 
 <template name="showresults">
-  <p>You currently have {{countyou}} card(s).</p>
-	<p>The winner of the last round was {{lastwinner}}.</p>
-	<p>Because player1 played the <em>{{p1card}}</em></p>
-	<p>and player2 played the <em>{{p2card}}</em>.</p>
+  <p>You currently have {{cardCount}} card(s).</p>
+	<p>The winner of this round is... {{lastwinner}}.</p>
+	{{#if p1card}}
+		<p>Because player1 played the <em>{{p1card}}</em>!</p>
+	{{/if}}
+	{{#if p2card}}
+		<p>and player2 played the <em>{{p2card}}</em>!</p>
+	{{/if}}
 </template>
