@@ -4,14 +4,28 @@
 
 <body>
 	{{> loginButtons}}
-  <h1>This is WAR! The first multi-player game Daniel ever built.</h1>
+
+  <h1>The game, my friend, is WAR.</h1>
+  <h4>The rules are simple, but it's a proper multi-player game that dislays results in real-time without any page reloads!</h4>
   {{> newgame}}
+
 	<br><br><hr>
+
 	{{> playerturn}}
-	<h3>What card do you want to play?</h3>
-	{{#each cards}}
-		{{> showcards}}
-  {{/each}}
+
+	<div class="leftblock">
+		<h3>Workspace</h3>
+		<p>What card do you want to play?</p>
+		{{#each cards}}
+			{{> showcards}}
+		{{/each}}
+	</div>
+
+	<div class="rightblock">
+		<h3>Results</h3>
+		{{> showresults}}
+	</div>
+	
 </body>
 
 <template name="newgame">
@@ -21,12 +35,19 @@
 <template name="showcards">
   {{#if isOwner}}	
 		<li>
-			{{value}} of {{suit}}
+			{{name}} of {{suit}}
 			<input type="checkbox" class="play-card" />
 		</li>
 	{{/if}}
 </template>
 
 <template name="playerturn">
-  <p>It is currently the turn of {{pt}}.</p>
+  <h3>It is currently the turn of: {{pt}}.</h3>
+</template>
+
+<template name="showresults">
+  <p>You currently have {{countyou}} card(s).</p>
+	<p>The winner of the last round was {{lastwinner}}.</p>
+	<p>Because player1 played the <em>{{p1card}}</em></p>
+	<p>and player2 played the <em>{{p2card}}</em>.</p>
 </template>
